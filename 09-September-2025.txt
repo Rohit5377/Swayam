@@ -1,0 +1,263 @@
+Problem 1
+Bob has a playlist of 
+ songs, each song has a singer associated with it (denoted by an integer)
+Favourite singer of Bob is the one whose songs are the most on the playlist
+Count the number of Favourite Singers of Bob
+Input Format 
+The first line contains an integer 
+, denoting the number of songs in Bob's playlist.
+The following input contains 
+ integers, 
+ integer denoting the singer of the 
+ song.
+Output Format
+Output a single integer, the number of favourite singers of Bob
+Note: Use 64 bit data type
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.*;
+class TestClass {
+    public static void main(String args[] ) throws Exception {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        long[] arr=new long[n];
+        for(int i=0;i<n;i++){
+            arr[i]=sc.nextLong();
+        }
+        HashMap<Long, Integer> mp=new HashMap<>();
+        for(int i=0;i<n;i++){
+           mp.put(arr[i],mp.getOrDefault(arr[i],0)+1); 
+        }
+        long max=0;
+        for(int val:mp.values()){
+            max=Math.max(max,val);
+        }
+        int count=0;
+        for(int val:mp.values()){
+            if(val==max) count++;
+        }
+        //int count=0;
+        System.out.print(count);
+    }
+}
+
+
+Problem 2
+You are given a table with 
+ rows and 
+ columns. Each cell is colored with white or black. Considering the shapes created by black cells, what is the maximum border of these shapes? Border of a shape means the maximum number of consecutive black cells in any row or column without any white cell in between.
+
+A shape is a set of connected cells. Two cells are connected if they share an edge. Note that no shape has a hole in it.
+
+Input format
+
+The first line contains 
+ denoting the number of test cases.
+The first line of each test case contains integers 
+ denoting the number of rows and columns of the matrix. Here, '#' represents a black cell and '.' represents a white cell. 
+Each of the next 
+ lines contains 
+ integers.
+Output format
+
+Print the maximum border of the shapes.
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.*;
+class TestClass {
+    public static void main(String args[] ) throws Exception {
+        Scanner sc=new Scanner(System.in);
+        int t=sc.nextInt();
+        for(int k=0;k<t;k++){
+            int n=sc.nextInt();
+            int m=sc.nextInt();
+            sc.nextLine();
+            char[][] arr=new char[n][m];
+            for(int i=0;i<n;i++){
+                String str=sc.nextLine();
+                for(int j=0;j<m;j++){
+                    arr[i][j]=str.charAt(j);
+                }
+            }
+            int max=0;
+            for(int i=0;i<n;i++){
+                int count=1;
+                for(int j=1;j<m;j++){
+                    if(arr[i][j]=='#' && arr[i][j-1]=='#'){
+                        count++;
+                    }else{
+                        max=Math.max(max,count);
+                        count=1;
+                    }
+                }
+            }
+            System.out.print(max);
+            System.out.println();
+        }
+    }
+}
+
+
+
+
+Problem 3
+You are required to enter a word that consists of 
+ and 
+ that denote the number of Zs and Os respectively. The input word is considered similar to word zoo if 
+.
+
+Determine if the entered word is similar to word zoo.
+
+For example, words such as zzoooo and zzzoooooo are similar to word zoo but not the words such as zzooo and zzzooooo.
+
+Input format
+
+First line: A word that starts with several Zs and continues by several Os.
+Note: The maximum length of this word must be 
+.
+Output format
+
+Print Yes if the input word can be considered as the string zoo otherwise, print No.
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.*;
+class TestClass {
+    public static void main(String args[] ) throws Exception {
+        Scanner sc=new Scanner(System.in);
+        String str=sc.nextLine();
+        int z=0;
+        int o=0;
+        int n=str.length();
+        for(int i=0;i<n;i++){
+            if(str.charAt(i)=='z') z++;
+            else o++;
+        }
+        if(2*z==o){
+            System.out.print("Yes");
+        }else{
+            System.out.print("No");
+        }
+    }
+}
+
+
+
+
+Problem 4
+You are provided an array 
+ of size 
+ that contains non-negative integers. Your task is to determine whether the number that is formed by selecting the last digit of all the N numbers is divisible by 
+.
+
+Note: View the sample explanation section for more clarification.
+
+Input format
+
+First line: A single integer 
+ denoting the size of array 
+Second line: 
+ space-separated integers.
+Output format
+
+If the number is divisible by 
+, then print 
+. Otherwise, print 
+.
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.*;
+class TestClass {
+    public static void main(String args[] ) throws Exception {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int[] arr=new int[n];
+        for(int i=0;i<n;i++){
+            arr[i]=sc.nextInt();
+        }
+        String str="";
+        for(int i=0;i<n;i++){
+            str+=arr[i]%10;
+        }
+        if(str.charAt(n-1)=='0'){
+            System.out.print("Yes");
+        }else{
+            System.out.print("No");
+        }
+    }
+}
+
+
+
+
+Problem 5
+You are conducting a contest at your college. This contest consists of two problems and 
+ participants. You know the problem that a candidate will solve during the contest.
+
+You provide a balloon to a participant after he or she solves a problem. There are only green and purple-colored balloons available in a market. Each problem must have a balloon associated with it as a prize for solving that specific problem. You can distribute balloons to each participant by performing the following operation:
+
+Use green-colored balloons for the first problem and purple-colored balloons for the second problem
+Use purple-colored balloons for the first problem and green-colored balloons for the second problem
+You are given the cost of each balloon and problems that each participant solve. Your task is to print the minimum price that you have to pay while purchasing balloons.
+
+Input format
+
+First line: 
+ that denotes the number of test cases (
+)
+For each test case: 
+First line: Cost of green and purple-colored balloons 
+Second line: 
+ that denotes the number of participants (
+)
+Next 
+ lines: Contain the status of users. For example, if the value of the 
+ integer in the 
+ row is 
+, then it depicts that the 
+ participant has not solved the 
+ problem. Similarly, if the value of the 
+ integer in the 
+ row is 
+, then it depicts that the 
+ participant has solved the 
+ problem.
+Output format
+For each test case, print the minimum cost that you have to pay to purchase balloons.
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.*;
+class TestClass {
+    public static void main(String args[] ) throws Exception {
+        Scanner sc=new Scanner(System.in);
+	int t=sc.nextInt();
+	for(int k=0;k<t;k++){
+		int p1=sc.nextInt();
+		int p2=sc.nextInt();
+		int n=sc.nextInt();
+		int[][] arr=new int[n][2];
+		for(int i=0;i<n;i++){
+			arr[i][0]=sc.nextInt();
+			arr[i][1]=sc.nextInt();
+		}
+		int first=0;
+		int second=0;
+		for(int i=0;i<n;i++){
+			if(arr[i][0]==1) first++;
+			if(arr[i][1]==1) second++;
+		}
+        
+		int price1=first*p1+second*p2;
+		int price2=second*p1+first*p2;
+        int res=Math.min(price1,price2);
+		System.out.print(res);
+		System.out.println();
+        }
+    }
+}
+
