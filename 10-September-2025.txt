@@ -1,0 +1,189 @@
+Problem 1
+You live in a village. The village can be represented as a line that contains 
+ grids. Each grid can be denoted as a house that is marked as 
+ or a blank space that is marked as 
+.
+
+A person lives in each house. A person can move to a grid if it is adjacent to that person. Therefore, the grid must be present on the left and right side of that person.
+
+Now, you are required to put some fences that can be marked as 
+ on some blank spaces so that the village can be divided into several pieces. A person cannot walk past a fence but can walk through a house. 
+
+You are required to divide the house based on the following rules:
+
+A person cannot reach a house that does not belong to that specific person.
+The number of grids each person can reach is the same and it includes the grid in which the house is situated.
+In order to show that you are enthusiastic and if there are many answers, then you are required to print the one where most fences are placed.
+Your task is to decide whether there is a possible solution. Print the possible solution.
+
+Input format
+
+First line: An integer 
+ that represents the number of grids (
+)
+Second line: 
+ characters that indicate the villages that are represented as 
+ or 
+ 
+Output format
+The output must be printed in the following format:
+
+First line: If possible, then print 
+. Otherwise, print 
+.
+Second line: If the answer is 
+, then print the way to do so.
+Sample Input
+5
+H...H
+Sample Output
+YES
+HBBBH
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.*;
+class TestClass {
+    public static void main(String args[] ) throws Exception {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        String str=sc.next();
+        char[] ch=new char[n];
+        for(int i=0;i<n;i++){
+            ch[i]=str.charAt(i);
+        }
+        boolean flag=false;
+        for(int i=1;i<n;i++){
+            if(ch[i]==ch[i-1] && ch[i]=='H') flag=true;
+        }
+        if(flag){
+            System.out.print("NO");
+            return;
+        }
+        String str1="";
+        for(int i=0;i<n;i++){
+            if(ch[i]=='.') ch[i]='B';
+            str1+=ch[i];
+        }
+        System.out.println("YES");
+        System.out.print(str1);
+    }
+}
+
+
+
+
+Problem 2
+
+You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
+Find two lines that together with the x-axis form a container, such that the container contains the most water.
+Return the maximum amount of water a container can store.
+Notice that you may not slant the container.
+
+Example 1:
+
+Input: height = [1,8,6,2,5,4,8,3,7]
+Output: 49
+Explanation: The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. In this case, the max area of water (blue section) the container can contain is 49.
+
+class Solution {
+    public int maxArea(int[] height) {
+        int left=0;
+        int right=height.length-1;
+        int maxArea=0;
+        while(left<right){
+            int area= (right-left) *Math.min(height[left], height[right]);
+            maxArea=Math.max(area,maxArea);
+            if(height[left]<height[right]){
+                left++;
+            }
+            else right--;
+        }
+        return maxArea;
+    }
+}
+
+Problem 3
+Given a linked list, swap every two adjacent nodes and return its head. You must solve the problem without modifying the values in the list's nodes (i.e., only nodes themselves may be changed.)
+Example 1:
+Input: head = [1,2,3,4]
+Output: [2,1,4,3]
+Explanation:
+
+Example 2:
+Input: head = []
+Output: []
+
+Example 3:
+Input: head = [1]
+Output: [1]
+
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        ListNode temp=head;
+        if(head==null){
+            return null;
+        }
+        if(head.next==null){
+            return head;
+        }
+        ListNode temp1=head.next;
+        ListNode a;
+        while(temp!=null&&temp.next!=null){
+            a=temp.next.next;
+            temp.next.next=temp;
+            if(a==null||a.next==null){
+                temp.next=a;
+            }else{
+            temp.next=a.next;
+            }
+            temp=a;
+        }
+        return temp1;
+    }
+}
+
+
+
+Problem 4
+A permutation of an array of integers is an arrangement of its members into a sequence or linear order.
+For example, for arr = [1,2,3], the following are all the permutations of arr: [1,2,3], [1,3,2], [2, 1, 3], [2, 3, 1], [3,1,2], [3,2,1].
+The next permutation of an array of integers is the next lexicographically greater permutation of its integer. More formally, if all the permutations of the array are sorted in one container according to their lexicographical order, then the next permutation of that array is the permutation that follows it in the sorted container. If such arrangement is not possible, the array must be rearranged as the lowest possible order (i.e., sorted in ascending order).
+For example, the next permutation of arr = [1,2,3] is [1,3,2].
+Similarly, the next permutation of arr = [2,3,1] is [3,1,2].
+While the next permutation of arr = [3,2,1] is [1,2,3] because [3,2,1] does not have a lexicographical larger rearrangement.
+Given an array of integers nums, find the next permutation of nums.
+The replacement must be in place and use only constant extra memory.
+
+ class Solution {
+    public void nextPermutation(int[] nums) {
+        int i=nums.length-1;
+        while(i>0 && nums[i-1]>=nums[i]){
+            i--;
+        }
+        if(i==0){
+            reverse(nums,0,nums.length-1);
+            return;
+        }
+        int j=nums.length-1;
+        while(j>=i && nums[j]<=nums[i-1]){
+            j--;
+        }
+        swap(nums,i-1,j);
+        reverse(nums,i,nums.length-1);
+    }
+    public void swap(int[] nums, int i, int j){
+        int temp=nums[i];
+        nums[i]=nums[j];
+        nums[j]=temp;
+    }
+    public void reverse(int[] nums, int i, int j){
+        while(i<j){
+            int temp=nums[i];
+            nums[i]=nums[j];
+            nums[j]=temp;
+            i++;
+            j--;
+        }
+    }
+}
