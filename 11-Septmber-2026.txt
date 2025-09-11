@@ -1,0 +1,138 @@
+1.  Given a positive integer N, return its corresponding column title as it would appear in an Excel sheet.
+For N =1 we have column A, for 27 we have AA and so on.
+Note: The alphabets are all in uppercase.
+Example 1:
+Input:
+N = 51
+Output: AY
+class Solution {
+    public String excelColumn(int N) {
+        //  Your code here
+        StringBuilder sb=new StringBuilder();
+        while(N>0){
+            int rem=N%26;
+            if(rem==0){
+                sb.append('Z');
+                N=(N-1)/26;
+            }else{
+                sb.append((char)(rem-1+'A'));
+                N/=26;
+            }
+        }
+        return sb.reverse().toString();
+    }
+}
+
+
+
+2.  A string is considered beautiful if it satisfies the following conditions:
+Each of the 5 English vowels ('a', 'e', 'i', 'o', 'u') must appear at least once in it.
+The letters must be sorted in alphabetical order (i.e. all 'a's before 'e's, all 'e's before 'i's, etc.).
+For example, strings "aeiou" and "aaaaaaeiiiioou" are considered beautiful, but "uaeio", "aeoiu", and "aaaeeeooo" are not beautiful.
+Given a string word consisting of English vowels, return the length of the longest beautiful substring of word. If no such substring exists, return 0.
+A substring is a contiguous sequence of characters in a string.
+
+class Solution {
+    public int longestBeautifulSubstring(String word) {
+        int n=word.length();
+        int max=0;
+        int length=1;
+        int vowelCount=1;
+        for(int i=1;i<n;i++){
+            if(word.charAt(i)==word.charAt(i-1)){
+                length++;
+            }else if(word.charAt(i)>word.charAt(i-1)){
+                vowelCount++;
+                length++;
+            }else{
+                vowelCount=1;
+                length=1;
+            }
+            if(vowelCount==5){
+                max=Math.max(max,length);
+            }
+        }
+        return max;
+    }
+}
+
+
+
+3.  Given two strings word1 and word2, return the minimum number of operations required to convert word1 to word2.
+You have the following three operations permitted on a word:
+Insert a character
+Delete a character
+Replace a character
+
+class Solution {
+    public int minDistance(String word1, String word2) {
+        int n=word1.length();
+        int m=word2.length();
+        int[][] dp=new int[n][m];
+        for(int i=0;i<n;i++){
+            Arrays.fill(dp[i],-1);
+        }
+        return recu(0,0,word1,word2,dp);
+    }
+    public int recu(int i, int j, String word1, String word2, int[][] dp){
+        if(i>=word1.length()){
+            return word2.length()-j;
+        }
+        if(j>=word2.length()){
+            return word1.length()-i;
+        }
+        if(dp[i][j]!=-1){
+            return dp[i][j];
+        }
+        if(word1.charAt(i)==word2.charAt(j)){
+            dp[i][j]= recu(i+1,j+1,word1,word2,dp);
+        }else{
+            dp[i][j]= 1+Math.min(recu(i+1,j+1,word1,word2,dp),Math.min(recu(i+1,j,word1,word2,dp),recu(i,j+1,word1,word2,dp)));
+        }
+        return dp[i][j];
+    }
+}
+
+
+
+4.  reverse the nodes of the list from position left to position right, and return the reversed list.
+Example 1:
+Input: head = [1,2,3,4,5], left = 2, right = 4
+Output: [1,4,3,2,5]
+Example 2:
+Input: head = [5], left = 1, right = 1
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        ListNode dummy=new ListNode(0);
+        dummy.next=head;
+        ListNode temp=dummy;
+        for(int i=1;i<left;i++){
+            temp=temp.next;
+        }
+        ListNode temp1=temp;
+        ListNode prev=null;
+        ListNode curr=temp.next;
+        ListNode agla=null;
+        temp=temp.next;
+        for(int i=left;i<=right;i++){
+            agla=curr.next;
+            curr.next=prev;
+            prev=curr;
+            curr=agla;
+        }
+        temp1.next=prev;
+        temp.next=agla;
+        return dummy.next;
+    }
+}
