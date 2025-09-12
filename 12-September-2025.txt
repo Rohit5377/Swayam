@@ -1,0 +1,126 @@
+1. Container With Most Water
+You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
+Find two lines that together with the x-axis form a container, such that the container contains the most water.
+Return the maximum amount of water a container can store.
+Notice that you may not slant the container.
+
+class Solution {
+    public int maxArea(int[] height) {
+        int left=0;
+        int right=height.length-1;
+        int maxArea=0;
+        while(left<right){
+            int area= (right-left) *Math.min(height[left], height[right]);
+            maxArea=Math.max(area,maxArea);
+            if(height[left]<height[right]){
+                left++;
+            }
+            else right--;
+        }
+        return maxArea;
+    }
+}
+
+
+
+2. Integer to Roman
+Seven different symbols represent Roman numerals with the following values:
+Symbol	Value
+I	1
+V	5
+X	10
+L	50
+C	100
+D	500
+M	1000
+Roman numerals are formed by appending the conversions of decimal place values from highest to lowest. Converting a decimal place value into a Roman numeral has the following rules:
+If the value does not start with 4 or 9, select the symbol of the maximal value that can be subtracted from the input, append that symbol to the result, subtract its value, and convert the remainder to a Roman numeral.
+If the value starts with 4 or 9 use the subtractive form representing one symbol subtracted from the following symbol, for example, 4 is 1 (I) less than 5 (V): IV and 9 is 1 (I) less than 10 (X): IX. Only the following subtractive forms are used: 4 (IV), 9 (IX), 40 (XL), 90 (XC), 400 (CD) and 900 (CM).
+Only powers of 10 (I, X, C, M) can be appended consecutively at most 3 times to represent multiples of 10. You cannot append 5 (V), 50 (L), or 500 (D) multiple times. If you need to append a symbol 4 times use the subtractive form.
+Given an integer, convert it to a Roman numeral.
+
+class Solution {
+    public String intToRoman(int num) {
+       String[] ch={"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
+       int[] arr={1000,900,500,400,100,90,50,40,10,9,5,4,1};
+       String str="";
+       for(int i=0;i<13;i++){
+         while(num>=arr[i]){
+            str+=ch[i];
+            num-=arr[i];
+         }
+       }
+       return str;
+    }
+}
+
+
+
+
+3. Letter Combinations of a Phone Number
+Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.
+A mapping of digits to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+
+class Solution {
+    public List<String> letterCombinations(String digits) {
+        String[] arr={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        List<String> list=new ArrayList<>();
+        StringBuilder sb=new StringBuilder();
+        if(digits.length()==0){
+            return list;
+        }
+        rec(digits,arr,sb,list,0);
+        return list;
+    }
+    public void rec(String digits, String[] arr,StringBuilder str, List<String> list,int index){
+
+        if(str.length()==digits.length()){
+            list.add(str.toString());
+            return;
+        }
+        int ind=digits.charAt(index)-'0';
+        for(int i=0;i<arr[ind].length();i++){
+            str.append(arr[ind].charAt(i));
+            rec(digits,arr,str,list,index+1);
+            str.deleteCharAt(str.length()-1);
+        }
+    }
+}
+
+
+
+4. Given the head of a linked list, reverse the nodes of the list k at a time, and return the modified list.
+k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes, in the end, should remain as it is.
+You may not alter the values in the list's nodes, only nodes themselves may be changed.
+
+ class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        ListNode temp=head;
+        int i=1;
+        while(temp != null && i<k){
+            temp=temp.next;
+            i++;
+        }
+        if(temp!=null){
+            ListNode t=reverseKGroup(temp.next,k);
+            ListNode r=reverse(head,temp);
+            head.next=t;
+            return r;
+        }else{
+            return head;
+        }
+    }
+    public ListNode reverse(ListNode head, ListNode tail){
+        ListNode curr=head;
+        ListNode prev=null;
+        ListNode agla=null;
+        while(curr!=tail){
+            agla=curr.next;
+            curr.next=prev;
+            prev=curr;
+            curr=agla;
+        }
+        curr.next=prev;
+        return tail;
+    }
+}
