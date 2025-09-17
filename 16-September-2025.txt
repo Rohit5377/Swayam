@@ -1,0 +1,176 @@
+
+1. First Missing Positive
+Given an unsorted integer array nums. Return the smallest positive integer that is not present in nums.
+You must implement an algorithm that runs in O(n) time and uses O(1) auxiliary space.
+Example 1:
+Input: nums = [1,2,0]
+Output: 3
+Explanation: The numbers in the range [1,2] are all in the array.
+Example 2:
+Input: nums = [3,4,-1,1]
+Output: 2
+Explanation: 1 is in the array but 2 is missing.
+Example 3:
+Input: nums = [7,8,9,11,12]
+Output: 1
+Explanation: The smallest positive integer 1 is missing.
+
+
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        int n=nums.length;
+        int i=0;
+        while(i<n){
+            if(nums[i]>0 && nums[i]<=n &&nums[i]!=nums[nums[i]-1]){
+                int correctPos=nums[i]-1;
+                int temp=nums[i];
+                nums[i]=nums[correctPos];
+                nums[correctPos]=temp;
+            }else{
+                i++;
+            }
+        }
+        if(nums[0]<0) return 1;
+        for(int j=0;j<n;j++){
+            if(nums[j]!=j+1){
+                return j+1;
+            }
+        }
+        return n+1;
+    }
+}
+
+
+
+2. Spiral Matrix
+Given an m x n matrix, return all elements of the matrix in spiral order.
+Example 1:
+Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+Output: [1,2,3,6,9,8,7,4,5]
+Example 2:
+Input: matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
+Output: [1,2,3,4,8,12,11,10,9,5,6,7]
+
+
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> list=new ArrayList<>();
+        int n=matrix.length;
+        int m=matrix[0].length;
+        int topRow=0;
+        int bottomRow=n-1;
+        int leftCol=0;
+        int rightCol=m-1;
+        while(list.size()<n*m){
+            for(int i=leftCol;i<=rightCol && list.size()<n*m;i++){
+                list.add(matrix[topRow][i]);
+            }
+            topRow++;
+            for(int i=topRow;i<=bottomRow && list.size()<n*m;i++){
+                list.add(matrix[i][rightCol]);
+            }
+            rightCol--;
+            for(int i=rightCol;i>=leftCol && list.size()<n*m;i--){
+                list.add(matrix[bottomRow][i]);
+            }
+            bottomRow--;
+            for(int i=bottomRow;i>=topRow && list.size()<n*m;i--){
+                list.add(matrix[i][leftCol]);
+            }
+            leftCol++;
+        }
+        return list;
+    }
+}
+
+
+3. Jump Game II
+You are given a 0-indexed array of integers nums of length n. You are initially positioned at index 0.
+Each element nums[i] represents the maximum length of a forward jump from index i. In other words, if you are at index i, you can jump to any index (i + j) where:
+0 <= j <= nums[i] and
+i + j < n
+Return the minimum number of jumps to reach index n - 1. The test cases are generated such that you can reach index n - 1.
+Example 1:
+Input: nums = [2,3,1,1,4]
+Output: 2
+Explanation: The minimum number of jumps to reach the last index is 2. Jump 1 step from index 0 to 1, then 3 steps to the last index.
+Example 2:
+Input: nums = [2,3,0,1,4]
+Output: 2
+
+
+class Solution {
+    public int jump(int[] nums) {
+        int n=nums.length;
+        int count=0;
+        int max=0;
+        int end=0;
+        for(int i=0;i<n-1;i++){
+            max=Math.max(max,i+nums[i]);
+            if(i==end){
+                count++;
+                end=max;
+            }
+            if(end>=n-1) return count;
+        }
+        return count;
+    }
+}
+
+
+4. N-Queens II
+The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
+Given an integer n, return the number of distinct solutions to the n-queens puzzle.
+Example 1:
+Input: n = 4
+Output: 2
+Explanation: There are two distinct solutions to the 4-queens puzzle as shown.
+Example 2:
+Input: n = 1
+Output: 1
+
+
+class Solution {
+    public int totalNQueens(int n) {
+     char[][] matrix=new char[n][n];
+        for(int i=0;i<n;i++){
+            Arrays.fill(matrix[i],'.');
+        }
+        return place(matrix,n,0);
+    }
+    public int place(char[][] matrix, int n, int col){
+        if(col==n){
+            return 1;
+        }
+        int count=0;
+        for(int i=0;i<n;i++){
+            if(isValid(n,matrix,i,col)){
+                matrix[i][col]='Q';
+                count+=place(matrix,n,col+1);
+                matrix[i][col]='.';
+            }
+        }
+        return count;
+    }
+    public boolean isValid(int n, char[][] matrix, int i, int j){
+        for(int k=0;k<j;k++){
+            if(matrix[i][k]=='Q') return false;
+        }
+        int p=i, q=j;
+        while(p>=0 && q>=0){
+            if(matrix[p][q]=='Q') return false;
+            p--;
+            q--;
+        }
+        p=i;
+        q=j;
+        while(p<n && q>=0){
+            if(matrix[p][q]=='Q') return false;
+            p++;
+            q--;
+        }
+        return true;
+    }
+}
+
+

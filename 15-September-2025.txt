@@ -1,0 +1,193 @@
+1. Add Two Numbers
+You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
+You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+Example 1:
+Input: l1 = [2,4,3], l2 = [5,6,4]
+Output: [7,0,8]
+Explanation: 342 + 465 = 807.
+Example 2:
+Input: l1 = [0], l2 = [0]
+Output: [0]
+Example 3:
+Input: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
+Output: [8,9,9,9,0,0,0,1]
+
+
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode temp1=l1;
+        ListNode temp2=l2;
+        ListNode a=new ListNode(0);
+        ListNode temp=a;
+        int sum=0,carry=0,x=0;
+        while(temp1!=null&&temp2!=null){
+            sum=temp1.val+temp2.val+carry;
+            x=sum%10;
+            carry=sum/10;
+            ListNode newNode=new ListNode(x);
+            temp.next=newNode;
+            temp=temp.next;
+            temp1=temp1.next;
+            temp2=temp2.next;
+        }
+        if(temp1!=null){
+            while(temp1!=null){
+             sum=temp1.val+carry;
+             x=sum%10;
+             carry=sum/10;
+             ListNode newNode=new ListNode(x);
+             temp.next=newNode;
+             temp=temp.next;
+             temp1=temp1.next;
+            }
+        }
+        if(temp2!=null){
+            while(temp2!=null){
+             sum=temp2.val+carry;
+             x=sum%10;
+             carry=sum/10;
+             ListNode newNode=new ListNode(x);
+             temp.next=newNode;
+             temp=temp.next;
+             temp2=temp2.next;
+            }
+        }
+        if(carry!=0){
+            ListNode newNode=new ListNode(carry);
+             temp.next=newNode;
+        }
+        return a.next;
+    }
+}
+
+
+
+2. Median of Two Sorted Arrays
+Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
+The overall run time complexity should be O(log (m+n)).
+Example 1:
+Input: nums1 = [1,3], nums2 = [2]
+Output: 2.00000
+Explanation: merged array = [1,2,3] and median is 2.
+Example 2:
+Input: nums1 = [1,2], nums2 = [3,4]
+Output: 2.50000
+Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5
+
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int n1=nums1.length;
+        int n2=nums2.length;
+        if(n1>n2){
+            return findMedianSortedArrays(nums2,nums1);
+        }
+        int N=n1+n2;
+        int st=0;
+        int end=n1;
+        while(st<=end){
+            int cut1=st+(end-st)/2;
+            int cut2=N/2-cut1;
+            int l1=(cut1==0)?Integer.MIN_VALUE:nums1[cut1-1];
+            int l2=(cut2==0)?Integer.MIN_VALUE:nums2[cut2-1];
+            int r1=(cut1==n1)?Integer.MAX_VALUE:nums1[cut1];
+            int r2=(cut2==n2)?Integer.MAX_VALUE:nums2[cut2];
+            if(l2<=r1 && l1<=r2){
+                if(N%2==0){
+                    return (Math.min(r1,r2)+Math.max(l1,l2))/2.0;
+                }else{
+                    return (double)Math.min(r1,r2);
+                }
+            }else if(l1>r2){
+                end=cut1-1;
+            }else{
+                st=cut1+1;
+            }
+        }
+        return 0.0;
+    }
+}
+
+
+
+
+3.Given a signed 32-bit integer x, return x with its digits reversed. If reversing x causes the value to go outside the signed 32-bit integer range [-231, 231 - 1], then return 0.
+Assume the environment does not allow you to store 64-bit integers (signed or unsigned).
+Example 1:
+Input: x = 123
+Output: 321
+Example 2:
+Input: x = -123
+Output: -321
+Example 3:
+Input: x = 120
+Output: 21
+
+
+class Solution {
+    public int reverse(int x) {
+        int a=x,b=0;
+        if(a<0){
+            System.out.println(-2*x);
+            x=(-2*x)+x;
+        }
+        System.out.println(x);
+        while(x>0){
+
+        if(b>Integer.MAX_VALUE/10){
+            return 0;
+        }
+            b=b*10+x%10;
+            x=x/10;
+        }
+        if(a<0){
+            b=-b;
+        }
+        return b;
+    }
+}
+
+
+
+4. Swap Nodes in Pairs
+Given a linked list, swap every two adjacent nodes and return its head. You must solve the problem without modifying the values in the list's nodes (i.e., only nodes themselves may be changed.)
+Example 1:
+Input: head = [1,2,3,4]
+Output: [2,1,4,3]
+Explanation:
+Example 2:
+Input: head = []
+Output: []
+Example 3:
+Input: head = [1]
+Output: [1]
+Example 4:
+Input: head = [1,2,3]
+Output: [2,1,3]
+
+
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        ListNode temp=head;
+        if(head==null){
+            return null;
+        }
+        if(head.next==null){
+            return head;
+        }
+        ListNode temp1=head.next;
+        ListNode a;
+        while(temp!=null&&temp.next!=null){
+            a=temp.next.next;
+            temp.next.next=temp;
+            if(a==null||a.next==null){
+                temp.next=a;
+            }else{
+            temp.next=a.next;
+            }
+            temp=a;
+        }
+        return temp1;
+    }
+}
+
+
