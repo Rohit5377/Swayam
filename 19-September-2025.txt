@@ -1,0 +1,171 @@
+
+1. Binary Tree Level Order Traversal
+Given the root of a binary tree, return the level order traversal of its nodes' values. (i.e., from left to right, level by level).
+Example 1:
+
+
+Input: root = [3,9,20,null,null,15,7]
+Output: [[3],[9,20],[15,7]]
+Example 2:
+
+Input: root = [1]
+Output: [[1]]
+Example 3:
+
+Input: root = []
+Output: []
+
+
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+    List<List<Integer>> list=new ArrayList<>();   
+        if(root==null) return list;             
+        int level=height(root)+1;
+        for(int i=1;i<=level;i++){
+        List<Integer> list1=new ArrayList<>();
+            forward(root,list1,i);
+            list.add(list1);   
+        }
+        return list;
+    }
+    public int height(TreeNode root){
+        if(root==null || (root.left==null&& root.right==null)) return 0;
+        return 1+Math.max(height(root.left),height(root.right));
+    }
+    public List<Integer> forward(TreeNode root,List<Integer> list,int i){
+        if(root==null) return list;
+        if(i==1) list.add(root.val);
+        forward(root.left,list,i-1);
+        forward(root.right,list,i-1);
+        return list;
+    }
+}
+
+
+
+
+2. Flatten Binary Tree to Linked List
+Given the root of a binary tree, flatten the tree into a "linked list":
+The "linked list" should use the same TreeNode class where the right child pointer points to the next node in the list and the left child pointer is always null.
+The "linked list" should be in the same order as a pre-order traversal of the binary tree.
+ 
+
+Example 1:
+Input: root = [1,2,5,3,4,null,6]
+Output: [1,null,2,null,3,null,4,null,5,null,6]
+Example 2:
+
+Input: root = []
+Output: []
+Example 3:
+
+Input: root = [0]
+Output: [0]
+
+
+class Solution {
+    public void flatten(TreeNode root) {
+        if(root==null) return;
+        TreeNode curr=root;
+        while(curr!=null){
+            if(curr.left!=null){
+                TreeNode temp=curr.left;
+                while(temp.right!=null) temp=temp.right;
+                temp.right=curr.right;
+                curr.right=curr.left;
+                curr.left=null;
+            }
+            curr=curr.right;
+        }
+    }
+}
+
+
+
+3. Single Number II
+Given an integer array nums where every element appears three times except for one, which appears exactly once. Find the single element and return it.
+
+You must implement a solution with a linear runtime complexity and use only constant extra space.
+Example 1:
+
+Input: nums = [2,2,3,2]
+Output: 3
+Example 2:
+
+Input: nums = [0,1,0,1,0,1,99]
+Output: 99
+
+
+class Solution {
+    public int singleNumber(int[] nums) {
+       Arrays.sort(nums);
+       int i=0;
+       int n=nums.length;
+       while(i<n-2){
+          if(nums[i]==nums[i+2]){
+              i=i+3;
+          }else{
+              return nums[i];
+          }
+       } 
+       if(i==n-2 || i==n-1){
+        return nums[i];
+       }
+       return -1;
+    }
+}
+
+
+
+
+
+4. Partition List
+Given the head of a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.
+
+You should preserve the original relative order of the nodes in each of the two partitions.
+Example 1:
+
+
+Input: head = [1,4,3,2,5,2], x = 3
+Output: [1,2,2,4,3,5]
+Example 2:
+
+Input: head = [2,1], x = 2
+Output: [1,2]
+
+
+
+class Solution {
+    public ListNode partition(ListNode head, int x) {
+        if(head==null || head.next==null) return head;
+        ListNode small=null;
+        ListNode sHead=null;
+        ListNode greater=null;
+        ListNode gHead=null;
+        ListNode temp=head;
+        while(temp!=null){
+            if(temp.val<x){
+                if(small==null){
+                    small=temp;
+                    sHead=temp;
+                }else{
+                    small.next=temp;
+                    small=small.next;
+                }
+            }else{
+                if(greater==null){
+                    greater=temp;
+                    gHead=temp;
+                }else{
+                    greater.next=temp;
+                    greater=greater.next;
+                }
+            }
+            temp=temp.next;
+        }
+        if(small!=null) small.next=gHead;
+        if(greater!=null) greater.next=null;
+        if(sHead==null) return gHead;
+        return sHead;
+    }
+}
